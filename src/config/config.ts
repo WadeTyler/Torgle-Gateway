@@ -1,10 +1,11 @@
 import configData from '../../torgle-config.json';
 import { FastifyHttpProxyOptions } from '@fastify/http-proxy';
+import { FastifyServerOptions } from 'fastify';
 
 export interface ServerOptions {
 	port?: number;
 	host?: string;
-	logging?: boolean;
+	fastifyOptions?: FastifyServerOptions;
 };
 
 export interface Config {
@@ -15,7 +16,9 @@ export interface Config {
 const defaultServerOptions: ServerOptions = {
 	port: 9000,
 	host: '0.0.0.0',
-	logging: true,
+	fastifyOptions: {
+		logger: true,
+	}
 };
 
 const config: Config = configData as Config;
