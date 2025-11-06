@@ -1,0 +1,4 @@
+torgle-config.json
+node_modules/
+dist/
+.env

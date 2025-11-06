@@ -1,0 +1,7 @@
+{
+  "watch": ["src", "torgle-config.json"],
+  "ext": "ts",
+  "execMap": {
+    "ts": "ts-node"
+  }
+}
