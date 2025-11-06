@@ -1,20 +1,5 @@
 import configData from '../../torgle-config.json';
-import { FastifyHttpProxyOptions } from '@fastify/http-proxy';
-import { FastifyServerOptions } from 'fastify';
-
-export interface ServerOptions extends FastifyServerOptions {
-	port?: number;
-	host?: string;
-};
-
-export interface ProxyRoute extends FastifyHttpProxyOptions {
-	requiresAuth?: boolean;
-}
-
-export interface Config {
-	serverOptions?: ServerOptions;
-	proxyRoutes?: ProxyRoute[];
-}
+import type { ServerOptions, Config, ProxyRoute, JwtOptions } from '../types/config.d.ts';
 
 const defaultServerOptions: ServerOptions = {
 	port: 9000,
@@ -22,13 +7,21 @@ const defaultServerOptions: ServerOptions = {
 	logger: true
 };
 
+/**
+ * Load and export the configuration settings.
+	* Merges default server options with those from the config file.
+	* Exports proxy routes and JWT options if provided.
+	* Defaults are applied where configuration is missing.
+	* Ensures type safety with TypeScript interfaces.
+*/
 const config: Config = configData as Config;
 
-export const serverOptions = {
+export const serverOptions: ServerOptions = {
 	...defaultServerOptions,
 	...config.serverOptions,
 };
-export const proxyRoutes = config.proxyRoutes || [];
+export const proxyRoutes: ProxyRoute[] = config.proxyRoutes || [];
+export const jwtOptions: JwtOptions | undefined = config.jwtOptions || undefined;
 
 export default config;
 

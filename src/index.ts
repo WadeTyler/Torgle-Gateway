@@ -1,5 +1,5 @@
 import fastify from 'fastify';
-import { proxyPlugin } from './routes/proxy';
+import { proxyPlugin } from './plugins/proxy';
 import { serverOptions } from './config/config';
 
 const server = fastify(serverOptions);
