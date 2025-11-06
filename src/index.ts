@@ -2,7 +2,7 @@ import fastify from 'fastify';
 import { proxyPlugin } from './routes/proxy';
 import { serverOptions } from './config/config';
 
-const server = fastify(serverOptions.fastifyOptions);
+const server = fastify(serverOptions);
 
 server.register(proxyPlugin);
 
