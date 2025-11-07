@@ -1,6 +1,0 @@
-services:
-  api-gateway:
-    container_name: api-gateway
-    image: wadetyler/torgle-gateway
-    ports:
-      - "9000:9000"
