@@ -1,0 +1,9 @@
+torgle-config.yml
+torgle-config.json
+node_modules/
+dist/
+.git/
+.env
+.DS_Store
+.gitignore
+

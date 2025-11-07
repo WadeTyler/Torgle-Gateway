@@ -10,22 +10,55 @@ import type { ServerOptions, Config, ProxyRoute, JwtOptions, CircuitBreakerOptio
  * 2. "torgle-config.json"
  */
 const configData = () => {
-	const yamlPath = path.resolve(process.cwd(), 'torgle-config.yml');
-	const jsonPath = path.resolve(process.cwd(), 'torgle-config.json');
-
-	if (fs.existsSync(yamlPath)) {
-		console.log("Loading configuration from torlge-config.yml");
-		const fileContents = fs.readFileSync(yamlPath, 'utf8');
-		return yaml.load(fileContents);
-	} else if (fs.existsSync(jsonPath)) {
-		console.log("Loading configuration from torlge-config.json");
-		const fileContents = fs.readFileSync(jsonPath, 'utf8');
-		return JSON.parse(fileContents);
-	} else {
-		console.warn('No configuration file found. Using default settings.');
-		return {};
+	// Attempt to read from mounted path first
+	// then fallback to current working directory
+	// This allows for flexibility in different deployment environments
+	try {
+		try {
+			return loadConfigFromMountedPath();
+		} catch (e) {
+			console.log((e as Error).message);
+			return loadConfigFromCwd();
+		}
+	} catch (e) {
+		console.log((e as Error).message);
+		console.log("Using default config.");
+		return {} as Config;
 	}
 }
+
+function loadConfigFromMountedPath() {
+	const yamlPath = "/usr/src/data/torgle-config.yml";
+	const jsonPath = "/usr/src/data/torgle-config.json";
+	return loadFiles(yamlPath, jsonPath);
+}
+
+function loadConfigFromCwd() {
+	const yamlPath = path.resolve(process.cwd(), 'torgle-config.yml');
+	const jsonPath = path.resolve(process.cwd(), 'torgle-config.json');
+	return loadFiles(yamlPath, jsonPath);
+}
+
+function loadFiles(yamlPath: string, jsonPath: string): Config | null {
+	if (fs.existsSync(yamlPath)) {
+		return loadFromFileSync(yamlPath);
+	} else if (fs.existsSync(jsonPath)) {
+		return loadFromFileSync(jsonPath);
+	}
+	throw new Error("No configuration file found in: " + yamlPath + " or " + jsonPath);
+}
+
+function loadFromFileSync(filePath: string): Config {
+	console.log("Loading configuration from", filePath);
+	const fileContents = fs.readFileSync(filePath, 'utf8');
+	if (filePath.endsWith('.yml') || filePath.endsWith('.yaml')) {
+		return yaml.load(fileContents) as Config;
+	} else if (filePath.endsWith('.json')) {
+		return JSON.parse(fileContents) as Config;
+	}
+	throw new Error('Unsupported configuration file format');
+}
+
 
 const defaultServerOptions: ServerOptions = {
 	port: 9000,
