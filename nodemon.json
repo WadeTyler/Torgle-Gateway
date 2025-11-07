@@ -1,5 +1,5 @@
 {
-  "watch": ["src", "torgle-config.json"],
+  "watch": ["src", "torgle-config.json", "torlge-config.yml"],
   "ext": "ts",
   "execMap": {
     "ts": "ts-node"

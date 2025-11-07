@@ -1,5 +1,31 @@
-import configData from '../../torgle-config.json';
+import path from 'path';
+import fs from 'fs';
+import yaml from 'js-yaml';
 import type { ServerOptions, Config, ProxyRoute, JwtOptions, CircuitBreakerOptions, RateLimitOptions } from '../types/config.d.ts';
+
+/**
+ * Load Config data from file.
+ * Priority Order:
+ * 1. "torgle-config.yml"
+ * 2. "torgle-config.json"
+ */
+const configData = () => {
+	const yamlPath = path.resolve(process.cwd(), 'torgle-config.yml');
+	const jsonPath = path.resolve(process.cwd(), 'torgle-config.json');
+
+	if (fs.existsSync(yamlPath)) {
+		console.log("Loading configuration from torlge-config.yml");
+		const fileContents = fs.readFileSync(yamlPath, 'utf8');
+		return yaml.load(fileContents);
+	} else if (fs.existsSync(jsonPath)) {
+		console.log("Loading configuration from torlge-config.json");
+		const fileContents = fs.readFileSync(jsonPath, 'utf8');
+		return JSON.parse(fileContents);
+	} else {
+		console.warn('No configuration file found. Using default settings.');
+		return {};
+	}
+}
 
 const defaultServerOptions: ServerOptions = {
 	port: 9000,
@@ -36,7 +62,7 @@ const defaultRateLimitOptions: RateLimitOptions = {
 	* Defaults are applied where configuration is missing.
 	* Ensures type safety with TypeScript interfaces.
 */
-const config: Config = configData as Config;
+const config: Config = configData() as Config;
 
 export const serverOptions: ServerOptions = { ...defaultServerOptions, ...config.serverOptions };
 export const proxyRoutes: ProxyRoute[] = config.proxyRoutes || [];
