@@ -12,7 +12,7 @@ registerCircuitBreaker(server);
 registerRateLimitPlugin(server);
 server.register(proxyPlugin);
 
-server.listen({ port: serverOptions.port, host: serverOptions.host }, function(err, address) {
+server.listen({ port: serverOptions.port, host: serverOptions.host }, function(err, _address) {
 	if (err) {
 		server.log.error(err);
 		process.exit(1);
