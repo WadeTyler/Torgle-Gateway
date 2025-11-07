@@ -3,9 +3,15 @@ import { FastifyHttpProxyOptions } from '@fastify/http-proxy';
 import { FastifyCircuitBreakerOptions } from '@fastify/circuit-breaker';
 import { FastifyRateLimitOptions, RateLimitPluginOptions } from '@fastify/rate-limit';
 
+export interface HealthCheckOptions {
+	enabled: boolean;
+	endpoint: string;
+}
+
 export interface ServerOptions extends FastifyServerOptions {
 	port?: number;
 	host?: string;
+	healthCheck: HealthCheckOptions;
 };
 
 export interface ProxyRoute extends FastifyHttpProxyOptions {

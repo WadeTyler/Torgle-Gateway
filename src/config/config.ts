@@ -63,7 +63,11 @@ function loadFromFileSync(filePath: string): Config {
 const defaultServerOptions: ServerOptions = {
 	port: 9000,
 	host: '0.0.0.0',
-	logger: true
+	logger: true,
+	healthCheck: {
+		enabled: true, // Health check endpoint enabled by default.
+		endpoint: "/health" // Default endpoint is '/health'
+	}
 };
 
 const defaultCircuitBreakerOptions: CircuitBreakerOptions = {

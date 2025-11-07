@@ -3,9 +3,11 @@ import { proxyPlugin } from './plugins/proxy';
 import { serverOptions } from './config/config';
 import { registerCircuitBreaker } from './plugins/circuitbreaker';
 import { registerRateLimitPlugin } from './plugins/ratelimit';
+import { registerHealthPlugin } from './plugins/health';
 
 const server = fastify(serverOptions);
 
+registerHealthPlugin(server);
 registerCircuitBreaker(server);
 registerRateLimitPlugin(server);
 server.register(proxyPlugin);
