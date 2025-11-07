@@ -1,5 +1,6 @@
 import { FastifyServerOptions } from 'fastify';
 import { FastifyHttpProxyOptions } from '@fastify/http-proxy';
+import { FastifyCircuitBreakerOptions } from '@fastify/circuit-breaker';
 
 export interface ServerOptions extends FastifyServerOptions {
 	port?: number;
@@ -16,10 +17,15 @@ export interface JwtOptions {
 	audience?: string;
 }
 
+export interface CircuitBreakerOptions extends FastifyCircuitBreakerOptions {
+	enabled: boolean;
+}
+
 export interface Config {
 	serverOptions?: ServerOptions;
 	proxyRoutes?: ProxyRoute[];
 	jwtOptions?: JwtOptions;
+	circuitBreakerOptions?: CircuitBreakerOptions;
 }
 
 

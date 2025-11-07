@@ -1,7 +1,7 @@
 
 import { FastifyInstance } from "fastify";
 import proxy from "@fastify/http-proxy";
-import { proxyRoutes } from "../config/config";
+import { circuitBreakerOptions, proxyRoutes } from "../config/config";
 import { authenticate } from "./auth";
 
 /**
@@ -11,9 +11,19 @@ import { authenticate } from "./auth";
  */
 export async function proxyPlugin(server: FastifyInstance) {
 	for (const route of proxyRoutes) {
+		const handlers = [];
+
+		if (circuitBreakerOptions.enabled) {
+			handlers.push(server.circuitBreaker());
+		}
+
+		if (route.requiresAuth) {
+			handlers.push(authenticate);
+		}
+
 		await server.register(proxy, {
 			...route,
-			preHandler: route.requiresAuth ? authenticate : undefined
+			preHandler: handlers.length > 0 ? handlers as any : undefined
 		});
 		server.log.info(`Registered proxy route: ${route.httpMethods || "*"} ${route.prefix} -> ${route.upstream}`);
 	}
