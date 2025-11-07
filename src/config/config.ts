@@ -1,5 +1,5 @@
 import configData from '../../torgle-config.json';
-import type { ServerOptions, Config, ProxyRoute, JwtOptions, CircuitBreakerOptions } from '../types/config.d.ts';
+import type { ServerOptions, Config, ProxyRoute, JwtOptions, CircuitBreakerOptions, RateLimitOptions } from '../types/config.d.ts';
 
 const defaultServerOptions: ServerOptions = {
 	port: 9000,
@@ -22,6 +22,13 @@ const defaultCircuitBreakerOptions: CircuitBreakerOptions = {
 	}
 };
 
+const defaultRateLimitOptions: RateLimitOptions = {
+	global: false, // Not global by default. This means it will only apply if enabled on each route.
+	max: 1000,
+	timeWindow: 1000 * 60,
+	hook: 'preHandler',
+}
+
 /**
  * Load and export the configuration settings.
 	* Merges default server options with those from the config file.
@@ -31,10 +38,9 @@ const defaultCircuitBreakerOptions: CircuitBreakerOptions = {
 */
 const config: Config = configData as Config;
 
-export const serverOptions: ServerOptions = {
-	...defaultServerOptions, ...config.serverOptions,
-};
+export const serverOptions: ServerOptions = { ...defaultServerOptions, ...config.serverOptions };
 export const proxyRoutes: ProxyRoute[] = config.proxyRoutes || [];
+export const rateLimitOptions: RateLimitOptions = { ...defaultRateLimitOptions, ...config.rateLimitOptions };
 export const jwtOptions: JwtOptions | undefined = config.jwtOptions || undefined;
 export const circuitBreakerOptions: CircuitBreakerOptions = {
 	...defaultCircuitBreakerOptions,

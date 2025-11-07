@@ -21,6 +21,7 @@
   "dependencies": {
     "@fastify/circuit-breaker": "^4.0.2",
     "@fastify/http-proxy": "^11.3.0",
+    "@fastify/rate-limit": "^10.3.0",
     "fastify": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.2.0"

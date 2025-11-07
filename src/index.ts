@@ -2,10 +2,12 @@ import fastify from 'fastify';
 import { proxyPlugin } from './plugins/proxy';
 import { serverOptions } from './config/config';
 import { registerCircuitBreaker } from './plugins/circuitbreaker';
+import { registerRateLimitPlugin } from './plugins/ratelimit';
 
 const server = fastify(serverOptions);
 
 registerCircuitBreaker(server);
+registerRateLimitPlugin(server);
 server.register(proxyPlugin);
 
 server.listen({ port: serverOptions.port, host: serverOptions.host }, function(err, address) {
