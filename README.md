@@ -30,7 +30,7 @@ Torgle Gateway will read your config file and run accordingly.
 ### Usage
 
 It is **recommended** to create a separate repository and
- `docker-compose.yml` for your API-Gateway.
+ `docker-compose.yml` for your API-Gateway. For usage examples you can visit [/examples](/examples).
 
 #### Running with Docker
 
