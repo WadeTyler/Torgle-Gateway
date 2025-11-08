@@ -1,5 +1,5 @@
-torgle-config.json
-torgle-config.yml
+/torgle-config.json
+/torgle-config.yml
 node_modules/
 dist/
 .env

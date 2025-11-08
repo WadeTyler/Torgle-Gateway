@@ -24,6 +24,8 @@ export async function registerHealthPlugin(server: FastifyInstance) {
 
 		server.get(serverOptions.healthCheck.endpoint, opts, (req, reply) => {
 			reply.send({ status: "OK" });
-		})
+		});
+
+		server.log.info(`Health Check endpoint registered at: ${serverOptions.healthCheck.endpoint}`);
 	}
 }
