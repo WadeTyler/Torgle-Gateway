@@ -1,0 +1,33 @@
+serverOptions:
+  port: 7001
+  host: "0.0.0.0"
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+rateLimitOptions:
+  global: true # Enables global rate limiting (Applies to all routes.)
+  max: 5
+  timeWindow: 60000 # 1 minute
+
+circuitBreakerOptions:
+  enabled: true
+  threshold: 5 # After 5 fail to route, it will return (503) Service Unavailable.
+  timeout: 10000
+  resetTimeout: 5000 # After 5 seconds, it will move circuit to half-open, and allow half requests to test, if service stable.
+
+proxyRoutes:
+  - prefix: "/api/posts"
+    upstream: "https://jsonplaceholder.typicode.com/posts"
+
+  - prefix: "/api/todos"
+    upstream: "https://jsonplaceholder.typicode.com/todos"
+    rateLimitOptions:
+      max: 3 # Overrides global rate limit options.
+
+  - prefix: "/api/users"
+    upstream: "https://jsonplaceholder.typicode.com/users"
+    httpMethods: ["GET"]
+
+  - prefix: "/fail"
+    upstream: "https://localhost:9999/fail" # A non-existent server (will force fail)

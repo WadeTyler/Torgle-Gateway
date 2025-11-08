@@ -1,0 +1,10 @@
+services:
+  torgle:
+    image: wadetyler/torgle-gateway:latest
+    ports:
+      - "7001:7001" # Using different internal port
+    environment:
+      # Used to set default internal port for docker. (Not necessary if using port 9000)
+      - "PORT=7001"
+    volumes:
+      - ./torgle-config.yml:/usr/src/data/torgle-config.yml

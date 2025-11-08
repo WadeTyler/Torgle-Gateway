@@ -1,0 +1,19 @@
+services:
+  # Sample keycloak auth server.
+  auth-service:
+    image: quay.io/keycloak/keycloak:26.4.4
+    ports:
+      - "8080:8080"
+    command: start-dev --import-realm
+    environment:
+      - "KC_BOOTSTRAP_ADMIN_USERNAME=admin"
+      - "KC_BOOTSTRAP_ADMIN_PASSWORD=admin"
+    volumes:
+      - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
+
+  torgle:
+    image: wadetyler/torgle-gateway:latest
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./torgle-config.yml:/usr/src/data/torgle-config.yml

@@ -1,0 +1,17 @@
+serverOptions:
+  port: 9000
+  host: '0.0.0.0'
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+proxyRoutes:
+  - prefix: "/api/posts"
+    upstream: "https://jsonplaceholder.typicode.com/posts"
+
+  - prefix: "/api/todos"
+    upstream: "https://jsonplaceholder.typicode.com/todos"
+
+  - prefix: "/api/users"
+    upstream: "https://jsonplaceholder.typicode.com/users"
+    httpMethods: ["GET"]

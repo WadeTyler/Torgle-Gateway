@@ -1,0 +1,24 @@
+serverOptions:
+  port: 7001
+  host: "0.0.0.0"
+  healthCheck:
+    enabled: true
+    endpoint: /health
+
+rateLimitOptions:
+  global: true # Enables global rate limiting (Applies to all routes.)
+  max: 5
+  timeWindow: 60000 # 1 minute
+
+proxyRoutes:
+  - prefix: "/api/posts"
+    upstream: "https://jsonplaceholder.typicode.com/posts"
+
+  - prefix: "/api/todos"
+    upstream: "https://jsonplaceholder.typicode.com/todos"
+    rateLimitOptions:
+      max: 3 # Overrides global rate limit options.
+
+  - prefix: "/api/users"
+    upstream: "https://jsonplaceholder.typicode.com/users"
+    httpMethods: ["GET"]

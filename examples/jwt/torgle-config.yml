@@ -1,0 +1,24 @@
+serverOptions:
+  port: 9000
+  host: "0.0.0.0"
+
+jwtOptions:
+  # Sample Dev Keycloak auth server. Set your own issuer and jwksUri here.
+  # Bootstraps with a realm "my_realm" and a client called "my_client".
+  issuer: "http://localhost:8080/realms/my_realm"
+  jwksUri: "http://host.docker.internal:8080/realms/my_realm/protocol/openid-connect/certs"
+  # Audience checking is optional.
+
+proxyRoutes:
+  - prefix: "/api/posts"
+    upstream: "https://jsonplaceholder.typicode.com/posts"
+    requiresAuth: true
+
+  - prefix: "/api/todos"
+    upstream: "https://jsonplaceholder.typicode.com/todos"
+    requiresAuth: true
+
+  - prefix: "/api/users"
+    upstream: "https://jsonplaceholder.typicode.com/users"
+    httpMethods: ["GET"]
+    # Does not require auth.
