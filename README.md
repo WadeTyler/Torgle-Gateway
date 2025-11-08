@@ -31,6 +31,31 @@ Torgle Gateway will read your config file and run accordingly.
 It is **recommended** to create a separate repository and
  `docker-compose.yml` for your API-Gateway.
 
+#### Running with Docker
+
+To run with docker, simply run:
+```bash
+docker run -v ./<pathToTorgleConfigFile>:/usr/src/data/torgle-config.<yml|yaml|json> -e PORT=<internalPort> -p <externalPort>:<internalPort> wadetyler/torgle-gateway:latest
+```
+The default internal port is 9000.
+
+##### Docker Compose
+Below is an example of a minimal docker compose file.
+```yml
+# docker-compose.yml
+services:
+  api-gateway:
+    image: wadetyler/torgle-gatway:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - "PORT=9000" # Not necessary if using port 9000 internally.
+    volumes:
+      - ./torgle-config.json:/usr/src/data/torgle-config.json
+```
+To start run `docker compose up -d --build`. To stop run `docker compose down`.
+
+
 #### Creating your torgle-config.yml
 
 For this example, we will show a `torgle-config.yml` configuration, but you can also use JSON.
