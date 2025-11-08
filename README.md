@@ -25,6 +25,7 @@ Torgle Gateway will read your config file and run accordingly.
 
 * Familiar with Git/GitHub.
 * Familiar with Docker and Docker compose.
+* Familiar with YAML/JSON.
 
 ### Usage
 
